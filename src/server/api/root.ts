@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { postRouter } from "./routers/post";
 import { createTRPCRouter, publicProcedure } from "./trpc";
 
 /**
@@ -16,7 +15,6 @@ export const appRouter = createTRPCRouter({
         greeting: `Hello from tRPC, ${input.text ?? "Anonymous"}`,
       };
     }),
-  post: postRouter,
 });
 
 // export type definition of API
