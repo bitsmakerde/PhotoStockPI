@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import openai from "~/utils/openai";
+import { photoTaggerRouter } from "./routers/photoTagger";
 import { createTRPCRouter, publicProcedure } from "./trpc";
 
 /**
@@ -10,11 +12,17 @@ import { createTRPCRouter, publicProcedure } from "./trpc";
 export const appRouter = createTRPCRouter({
   hello: publicProcedure
     .input(z.object({ text: z.string().nullish() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello from tRPC, ${input.text ?? "Anonymous"}`,
-      };
+    .query(async ({ input }) => {
+      const completion = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: "Hello world",
+      });
+
+      console.log("completion", completion.data.choices);
+
+      return completion.data.choices[0]?.text;
     }),
+  photoTagger: photoTaggerRouter,
 });
 
 // export type definition of API

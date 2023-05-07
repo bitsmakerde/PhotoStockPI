@@ -50,7 +50,7 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+              {hello.data ? hello.data : "Loading tRPC query..."}
             </p>
             <AuthShowcase />
           </div>
