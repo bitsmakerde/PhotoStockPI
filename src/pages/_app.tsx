@@ -1,9 +1,9 @@
 import { type AppType } from "next/app";
 import { Inter as FontSans } from "next/font/google";
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 
 import "~/styles/globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+
 import { api } from "~/utils/api";
 
 const fontSans = FontSans({
@@ -11,10 +11,7 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
       <style jsx global>
@@ -24,9 +21,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
           }
         `}
       </style>
-      <SessionProvider session={session}>
+      <ClerkProvider {...pageProps}>
         <Component {...pageProps} />
-      </SessionProvider>
+      </ClerkProvider>
     </>
   );
 };

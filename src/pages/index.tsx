@@ -1,14 +1,21 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import {
+  SignIn,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
 import { Book } from "lucide-react";
-import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-  const hello = api.hello.useQuery({ text: session?.user.name });
+  const user = useUser();
+  const hello = api.hello.useQuery({ text: user?.firstName ?? "World" });
 
   return (
     <>
@@ -52,7 +59,15 @@ const Home: NextPage = () => {
             <p className="text-2xl">
               {hello.data ? hello.data : "Loading tRPC query..."}
             </p>
-            <AuthShowcase />
+            <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+            <SignedIn>
+              {/* Mount the UserButton component */}
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+              {/* Signed out users get sign in button */}
+              <SignInButton />
+            </SignedOut>
           </div>
         </div>
       </main>
@@ -61,18 +76,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => signOut() : () => signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};

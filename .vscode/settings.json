@@ -8,5 +8,5 @@
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["OPENAI"]
+  "cSpell.words": ["middlewares", "OPENAI", "runtimes"]
 }
